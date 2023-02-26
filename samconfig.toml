@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "go-parameter-test"
+s3_bucket = "sam-964089076666"
+s3_prefix = "go-parameter-test"
+region = "us-east-1"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+disable_rollback = false
+image_repositories = []

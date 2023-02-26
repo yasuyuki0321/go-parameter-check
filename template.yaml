@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  go-parameter-test
+
+  Sample SAM Template for go-parameter-test
+
+Resources:
+  ParameterTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: parameter-test
+      CodeUri: parameterTest/
+      Handler: main
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Layers:
+        - arn:aws:lambda:us-east-1:177933569100:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4
+      Environment:
+        Variables:
+          PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: "DEBUG"
+      Role: !GetAtt ParameterTestRole.Arn
+  ParameterTestRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action: "sts:AssumeRole"
+            Principal:
+              Service: lambda.amazonaws.com
+      Policies:
+        - PolicyName: "parameter-test-policy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - ssm:GetParameter
+                  - kms:DecryptSecureString
+                Resource: "*"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole

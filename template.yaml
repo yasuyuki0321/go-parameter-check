@@ -15,6 +15,7 @@ Resources:
       Runtime: go1.x
       Architectures:
         - x86_64
+      Timeout: 300
       Layers:
         - arn:aws:lambda:us-east-1:177933569100:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4
       Environment:
@@ -39,6 +40,7 @@ Resources:
               - Effect: "Allow"
                 Action:
                   - ssm:GetParameter
+                  - ssm:GetParametersByPath
                   - kms:DecryptSecureString
                 Resource: "*"
       ManagedPolicyArns:
